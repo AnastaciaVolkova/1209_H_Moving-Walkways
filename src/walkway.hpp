@@ -1,0 +1,2 @@
+// Class declaration for walkway.
+
