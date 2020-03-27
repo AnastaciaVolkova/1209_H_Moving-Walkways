@@ -1,0 +1,6 @@
+bin/
+obj/
+*.o
+message.txt
+moving_walkways
+
