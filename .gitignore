@@ -3,4 +3,5 @@ obj/
 *.o
 message.txt
 moving_walkways
+input.txt
 
