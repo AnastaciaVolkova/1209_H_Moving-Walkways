@@ -14,12 +14,12 @@
 
 using namespace std;
 
-using WalkWays=list<Walkway>;
+using WalkwayL=list<Walkway>;
 
 // Structure for input datum.
 struct InputData{
     unsigned int walk_ways_number;
-    unsigned int distance_to_walk;
+    float distance_to_walk;
     list<tuple<float, float, float>> walkways_parameters;
 };
 
@@ -47,6 +47,27 @@ public:
         }
     }
 };
+
+// Initializer for Walkway list.
+class WalkWaysInitializer{
+public:
+    // Initialize list of Walkway objects.
+    static void Initialize(WalkwayL& ww, const InputData& in_data ){
+        float x, y = 0;
+
+        for (auto it: in_data.walkways_parameters){
+            x = get<0>(it);
+            if (x != y)
+                ww.push_back(Walkway(y, x, 0));
+            y = get<1>(it);
+            ww.push_back(Walkway(x, y, get<2>(it)));
+        }
+        
+        if (get<1>(in_data.walkways_parameters.back()) != in_data.distance_to_walk)
+            ww.push_back(Walkway(get<1>(in_data.walkways_parameters.back()), in_data.distance_to_walk, 0));
+    }
+};
+
 
 int main(int argc, char* argv[]){
     InputData in_data;

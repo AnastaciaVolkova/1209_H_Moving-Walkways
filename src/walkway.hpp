@@ -9,7 +9,7 @@ private:
     float speed_; // Speed of walkway.
     EndsT ends_;  // Ends coordinates.
 public:
-    Walkway();
+    Walkway(float x, float y, float speed);
     
     // Speed getter.
     float GetSpeed();

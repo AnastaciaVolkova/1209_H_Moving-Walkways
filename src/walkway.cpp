@@ -1,7 +1,9 @@
 // Class definition for walkway.
 #include "walkway.hpp"
 
-Walkway::Walkway():speed_(0){};
+using namespace std;
+
+Walkway::Walkway(float x, float y, float speed):speed_(speed){ends_=make_tuple(x, y);};
 
 // Speed getter.
 float Walkway::GetSpeed(){return speed_;};
