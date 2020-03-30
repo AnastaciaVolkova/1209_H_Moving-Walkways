@@ -38,7 +38,7 @@ public:
         istringstream iss(x);
         vector<string> x2(istream_iterator<string>{iss}, istream_iterator<string>());
         in_data.walk_ways_number = stof(x2[0]);
-        in_data.walk_ways_number = stof(x2[1]);
+        in_data.distance_to_walk= stof(x2[1]);
 
         while(getline(in_stream, x)&&(x != "")){
             istringstream iss(x);
@@ -72,5 +72,10 @@ public:
 int main(int argc, char* argv[]){
     InputData in_data;
     Parser::Parse(argc, argv, in_data);
+    WalkwayL walkways;
+    WalkWaysInitializer::Initialize(walkways, in_data);
+    for (auto i: walkways)
+        cout << i << endl;
     cout << "Problem \"Moving Walkways\"" << endl;
+    return 0;
 }

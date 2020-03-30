@@ -12,3 +12,9 @@ float Walkway::GetSpeed(){return speed_;};
 // ToDo
 void Walkway::SetSpeed(float s){};
 
+// Put to output stream information on object.
+ostream& operator<<(ostream& os, const Walkway& ot){
+    os << get<0>(ot.ends_) << " " << get<1>(ot.ends_) << " " << ot.speed_;
+    return os;
+}
+

@@ -2,6 +2,7 @@
 #if !defined(WALKWAY_HPP_)
 #define WALKWAY_HPP_
 #include <tuple>
+#include <iostream>
 
 class Walkway{
 private:
@@ -17,6 +18,9 @@ public:
     // Speed setter.
     // s - speed to set for walkway.
     void SetSpeed(float s);
+
+    // Put to output stream information on object.
+    friend std::ostream& operator<<(std::ostream& os, const Walkway& ot); 
 };
 #endif
 
