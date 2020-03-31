@@ -8,9 +8,8 @@
 #include <iterator>
 #include <fstream>
 
-#include "limak.hpp"
 #include "walkway.hpp"
-
+#include "solver.hpp"
 
 using namespace std;
 
@@ -76,6 +75,7 @@ int main(int argc, char* argv[]){
     WalkWaysInitializer::Initialize(walkways, in_data);
     for (auto i: walkways)
         cout << i << endl;
+    Solver::GetSolution(walkways); 
     cout << "Problem \"Moving Walkways\"" << endl;
     return 0;
 }
