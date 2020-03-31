@@ -34,7 +34,7 @@ $(obj_dir):
 	mkdir -p $(obj_dir)
 
 clean:
-	rm -rf *.o
+	rm -rf $(obj_dir)
 
 cleanall: clean
 	rm -rf $(target_file)
