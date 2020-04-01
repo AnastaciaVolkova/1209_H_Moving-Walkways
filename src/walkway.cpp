@@ -6,11 +6,12 @@ using namespace std;
 Walkway::Walkway(float x, float y, float speed):speed_(speed){ends_=make_tuple(x, y);};
 
 // Speed getter.
-float Walkway::GetSpeed(){return speed_;};
+float Walkway::GetSpeed() const {return speed_;};
 
-// Speed setter.
-// ToDo
-void Walkway::SetSpeed(float s){};
+// Get length of walkway.
+float Walkway::GetLength() const {
+    return get<1>(ends_) - get<0>(ends_);
+};
 
 // Put to output stream information on object.
 ostream& operator<<(ostream& os, const Walkway& ot){

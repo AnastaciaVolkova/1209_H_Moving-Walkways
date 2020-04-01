@@ -13,11 +13,10 @@ public:
     Walkway(float x, float y, float speed);
     
     // Speed getter.
-    float GetSpeed();
+    float GetSpeed() const;
 
-    // Speed setter.
-    // s - speed to set for walkway.
-    void SetSpeed(float s);
+    // Get length of walkway.
+    float GetLength() const;
 
     // Put to output stream information on object.
     friend std::ostream& operator<<(std::ostream& os, const Walkway& ot); 
