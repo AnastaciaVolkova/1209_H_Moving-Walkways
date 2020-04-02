@@ -18,8 +18,9 @@ public:
     // Energy getter.
     float GetEnergy(); 
 
-    // Make Limak walk for m meters with speed s.
-    // m - meters to walk.
-    void MakeWalk(float m);
+    // Make Limak walk for s seconds.
+    // t - seconds to walk.
+    // returns how many seconds Limak walks.
+    float MakeWalk(float t);
 };
 #endif
