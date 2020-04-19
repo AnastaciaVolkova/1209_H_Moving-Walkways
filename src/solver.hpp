@@ -11,31 +11,31 @@
 class Solver {
 private:
     // Get Limak's speed deltas in situation walkway-path.
-    static std::tuple<float, float> GetDeltasWP(const Walkway& w, const Walkway& p){
-        float d = p.GetLength();
-        float s = w.GetSpeed();
-        float l = w.GetLength();
+    static std::tuple<double, double> GetDeltasWP(const Walkway& w, const Walkway& p){
+        double d = p.GetLength();
+        double s = w.GetSpeed();
+        double l = w.GetLength();
 
         // Limak's speed delta on the walkway.
-        float d_w = std::min(1.0f, (d*(s+1))/(2*l+d));
+        double d_w = std::min(1.0, (d*(s+1))/(2*l+d));
 
         // Limak's speed delta on the path.
-        float d_p = -(l*d_w)/((l+d)*(d_w-((d*(s+1))/(l+d))));
+        double d_p = -(l*d_w)/((l+d)*(d_w-((d*(s+1))/(l+d))));
 
         return std::make_tuple(d_w, d_p);
     }
 
     // Get Limak's speed deltas in situation walkway-walkway.
-    static std::tuple<float, float> GetDeltasWW(const Walkway& w1, const Walkway& w2){
-        float l_1 = w1.GetLength();
-        float l_2 = w2.GetLength();
-        float s_1 = w1.GetSpeed();
-        float s_2 = w2.GetSpeed();
-        float delta_w1, delta_w2;
+    static std::tuple<double, double> GetDeltasWW(const Walkway& w1, const Walkway& w2){
+        double l_1 = w1.GetLength();
+        double l_2 = w2.GetLength();
+        double s_1 = w1.GetSpeed();
+        double s_2 = w2.GetSpeed();
+        double delta_w1, delta_w2;
         if (s_1 < s_2)
             delta_w1 = 0;
         else
-            delta_w1 = std::min(1.0f, (l_2*(s_1+1))/(2*l_1+s_2*l_1+l_2));
+            delta_w1 = std::min(1.0, (l_2*(s_1+1))/(2*l_1+s_2*l_1+l_2));
 
         delta_w2 = ((l_1*(1+s_2))/(l_1+l_2))*((delta_w1)/((l_2*(s_1+1))/(l_1+l_2)-delta_w1));
         return std::make_tuple(delta_w1, delta_w2);
@@ -43,8 +43,8 @@ private:
 
 public:
     // Returns the fastest time, which need Limak to get from 0 to L.
-    static float GetSolution(const std::list<Walkway>& walkways){
-        float t = 0.0; // Time for Limak to travel along the distance.
+    static double GetSolution(const std::list<Walkway>& walkways){
+        double t = 0.0; // Time for Limak to travel along the distance.
         Limak limak;
         auto w_it = walkways.cbegin();
 
@@ -61,7 +61,7 @@ public:
                     t += limak.MakeWalk(*w_it_1);
                 } else {
                     {
-                        float delta_w, delta_p;
+                        double delta_w, delta_p;
                         if (w_it_2->GetSpeed() == 0)
                             std::tie(delta_w, delta_p) = GetDeltasWP(*w_it_1, *w_it_2);
                         else

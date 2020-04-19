@@ -6,17 +6,17 @@
 
 class Walkway{
 private:
-    using EndsT=std::tuple<float, float>;
-    float speed_; // Speed of walkway.
+    using EndsT=std::tuple<double, double>;
+    double speed_; // Speed of walkway.
     EndsT ends_;  // Ends coordinates.
 public:
-    Walkway(float x, float y, float speed);
+    Walkway(double x, double y, double speed);
     
     // Speed getter.
-    float GetSpeed() const;
+    double GetSpeed() const;
 
     // Get length of walkway.
-    float GetLength() const;
+    double GetLength() const;
 
     // Put to output stream information on object.
     friend std::ostream& operator<<(std::ostream& os, const Walkway& ot);
