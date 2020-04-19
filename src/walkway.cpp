@@ -3,13 +3,13 @@
 
 using namespace std;
 
-Walkway::Walkway(float x, float y, float speed):speed_(speed){ends_=make_tuple(x, y);};
+Walkway::Walkway(double x, double y, double speed):speed_(speed){ends_=make_tuple(x, y);};
 
 // Speed getter.
-float Walkway::GetSpeed() const {return speed_;};
+double Walkway::GetSpeed() const {return speed_;};
 
 // Get length of walkway.
-float Walkway::GetLength() const {
+double Walkway::GetLength() const {
     return get<1>(ends_) - get<0>(ends_);
 };
 

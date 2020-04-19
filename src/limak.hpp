@@ -6,24 +6,24 @@
 
 class Limak{
 private:
-    float speed_; // Limaks speed.
-    float energy_;  // Limaks energy.
+    double speed_; // Limaks speed.
+    double energy_;  // Limaks energy.
 public:
     Limak();
 
     // Speed getter.
-    float GetSpeed();
+    double GetSpeed();
 
     // Speed setter.
     // s - speed to set.
-    void SetSpeed(float s);
+    void SetSpeed(double s);
 
     // Energy getter.
-    float GetEnergy();
+    double GetEnergy();
 
     // Make Limak walk on the path or walkway.
     // walkway - path or walkway to walk.
     // returns how many seconds Limak walks.
-    float MakeWalk(const Walkway& walkway);
+    double MakeWalk(const Walkway& walkway);
 };
 #endif
