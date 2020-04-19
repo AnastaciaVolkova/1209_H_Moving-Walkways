@@ -3,6 +3,7 @@
 #define SOLVER_HPP_
 #include <list>
 #include <tuple>
+#include <algorithm>
 #include "walkway.hpp"
 #include "limak.hpp"
 
@@ -62,9 +63,9 @@ public:
                     {
                         float delta_w, delta_p;
                         if (w_it_2->GetSpeed() == 0)
-                            std::tie(delta_w, delta_p) = GeitDeltasWP(*w_it_1, *w_it_2);
+                            std::tie(delta_w, delta_p) = GetDeltasWP(*w_it_1, *w_it_2);
                         else
-                            std::tie(delta_w, delta_p) = GeitDeltasWW(*w_it_1, *w_it_2);
+                            std::tie(delta_w, delta_p) = GetDeltasWW(*w_it_1, *w_it_2);
 
                         // Go on the walkway.
                         limak.SetSpeed(1-delta_w);
