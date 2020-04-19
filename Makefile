@@ -19,7 +19,7 @@ CC=c++
 CPP_FLAGS=-std=c++14
 
 ifeq ($(DEBUG_MODE), on)
-  CPP_FLAGS += -g
+  CPP_FLAGS += -g -O0
 endif
 
 all: $(target_file)
