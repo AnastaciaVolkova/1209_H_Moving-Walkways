@@ -26,12 +26,7 @@ struct InputData{
 class Parser{
 public:
     // Parse input file and fill InputData structure.
-    static void Parse(int argc, char* argv[], InputData& in_data){
-        ifstream ifs(argv[1]);
-        stringstream in_stream;
-        in_stream << ifs.rdbuf();
-        ifs.close();
-        
+    static void Parse(stringstream& in_stream, InputData& in_data){
         string x;
         getline(in_stream, x);
         istringstream iss(x);
@@ -69,13 +64,19 @@ public:
 
 
 int main(int argc, char* argv[]){
-    InputData in_data;
-    Parser::Parse(argc, argv, in_data);
-    WalkwayL walkways;
-    WalkWaysInitializer::Initialize(walkways, in_data);
-    for (auto i: walkways)
-        cout << i << endl;
-    Solver::GetSolution(walkways); 
-    cout << "Problem \"Moving Walkways\"" << endl;
+    if (argc > 1) {
+        ifstream ifs(argv[1]);
+        stringstream in_stream;
+        in_stream << ifs.rdbuf();
+        ifs.close();
+        InputData in_data;
+        Parser::Parse(in_stream, in_data);
+        WalkwayL walkways;
+        WalkWaysInitializer::Initialize(walkways, in_data);
+        for (auto i : walkways)
+            cout << i << endl;
+        cout << Solver::GetSolution(walkways) << endl;
+        cout << "Problem \"Moving Walkways\"" << endl;
+    }
     return 0;
 }
