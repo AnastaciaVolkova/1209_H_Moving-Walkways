@@ -8,7 +8,7 @@ float Limak::GetSpeed(){return speed_;};
 
 // Speed setter.
 // ToDo
-void Limak::SetSpeed(float s){};
+void Limak::SetSpeed(float s) { speed_ = s; };
 
 // Energy getter.
 float Limak::GetEnergy(){return energy_;};
