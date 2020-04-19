@@ -1,4 +1,4 @@
-s definition for Limak (walker).
+// definition for Limak (walker).
 #include "limak.hpp"
 
 Limak::Limak():speed_(0), energy_(0){};
@@ -13,21 +13,20 @@ void Limak::SetSpeed(float s){};
 // Energy getter.
 float Limak::GetEnergy(){return energy_;};
 
-// Make Limak walk for s seconds.
-// t - seconds to walk.
+// Make Limak walk on the path or walkway.
+// walkway - path or walkway to walk.
 // returns how many seconds Limak walks.
-float Limak::MakeWalk(float t){
+float Limak::MakeWalk(const Walkway& walkway){
     // How much energy Limak accumulates/spends per second.
-    float d_e = (1-speed_);    
-    // How much time Limak can walk with his energy.
-    float t_real;
-    if (d_e<0){
-        t_real = -energy_/(d_e);
-        energy_ = 0;
-        return t_real;
-    } else {
-        energy_ += d_e*t;
-        return t;
-    }
+    float d_e = (1-speed_);
+
+    // How much time Limak needs to walk.
+    float dt = walkway.GetLength()/(speed_+walkway.GetSpeed());
+
+    energy_ += (dt*d_e);
+
+    if (energy_ < 0)
+        throw "Out of energy";
+    return dt;
 };
 
