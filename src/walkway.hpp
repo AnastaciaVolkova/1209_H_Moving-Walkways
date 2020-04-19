@@ -19,7 +19,7 @@ public:
     float GetLength() const;
 
     // Put to output stream information on object.
-    friend std::ostream& operator<<(std::ostream& os, const Walkway& ot); 
+    friend std::ostream& operator<<(std::ostream& os, const Walkway& ot);
 };
 #endif
 
