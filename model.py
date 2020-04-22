@@ -59,30 +59,37 @@ def CreateTestCases():
         test_cases[:, i:i+1, :] = tc
     return test_cases
 
+
+def Solver(l1, s1, l2, s2):
+    tn = NormalWalk(l1, s1, l2, s2)
+    tmin = tn
+    usefull_case = None
+    for di in range(0, d_range + 1):
+        d1 = -di / d_range
+        for dj in range(0, d_range + 1):
+            d2 = dj / d_range
+            t = AcceleratedWalk(l1, s1, l2, s2, d1, d2)
+            if tmin - t > 1e-6:
+                usefull_case = [l1, s1, l2, s2, t, d1, d2]
+                tmin = t
+    if usefull_case is not None:
+        print(" ".join([str(uc) for uc in usefull_case]))
+
+
 def main():
     if len(sys.argv) == 5:
-        l1 = int(sys.argv[1])
-        s1 = int(sys.argv[2])
-        l2 = int(sys.argv[3])
-        s2 = int(sys.argv[4])
+        l1 = float(sys.argv[1])
+        s1 = float(sys.argv[2])
+        l2 = float(sys.argv[3])
+        s2 = float(sys.argv[4])
+        Solver(l1, s1, l2, s2)
     else:
+        np.random.seed(0)
         test_cases = CreateTestCases()
         for tc_row in test_cases:
             for tc in tc_row:
                 l1, s1, l2, s2 = tc
-                tn = NormalWalk(l1, s1, l2, s2)
-                tmin = tn
-                usefull_case = None
-                for di in range(0, d_range+1):
-                    d1 = -di / d_range
-                    for dj in range(0, d_range):
-                        d2 = dj / d_range
-                        t = AcceleratedWalk(l1, s1, l2, s2, d1, d2)
-                        if tmin-t>1e-6:
-                            usefull_case = tc.tolist() + [d1, d2, tmin, t]
-                            tmin = t
-                if usefull_case is not None:
-                    print(usefull_case)
+                Solver(l1, s1, l2, s2)
 
 
 if __name__ == "__main__":
