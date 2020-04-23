@@ -1,8 +1,11 @@
-import os
+import threading
 import sys
 import numpy as np
+import queue
 
-d_range = 40
+
+d_range = 100
+num_threads = 8
 
 # Limak goes with speed 1.
 # Energy is neigther accumulated, nor consumed.
@@ -73,7 +76,29 @@ def Solver(l1, s1, l2, s2):
                 usefull_case = [l1, s1, l2, s2, t, d1, d2]
                 tmin = t
     if usefull_case is not None:
-        print(" ".join([str(uc) for uc in usefull_case]))
+        return " ".join([str(uc) for uc in usefull_case])
+    else:
+        return "{} {} {} {} {} {} {}".format(l1, s1, l2, s2, tn, 0, 0)
+
+
+def SolverT(test_cases_queue, lock):
+    lock.acquire()
+    if not test_cases_queue.empty():
+        tc = test_cases_queue.get()
+    else:
+        tc = None
+    lock.release()
+    while tc is not None:
+        l1, s1, l2, s2 = tc
+        res = Solver(l1, s1, l2, s2)
+        test_cases_queue.task_done()
+        lock.acquire()
+        if not test_cases_queue.empty():
+            tc = test_cases_queue.get()
+            print(res)
+        else:
+            tc = None
+        lock.release()
 
 
 def main():
@@ -86,10 +111,23 @@ def main():
     else:
         np.random.seed(0)
         test_cases = CreateTestCases()
+        lock = threading.Lock()
+        test_cases_queue = queue.Queue()
+
         for tc_row in test_cases:
             for tc in tc_row:
-                l1, s1, l2, s2 = tc
-                Solver(l1, s1, l2, s2)
+                test_cases_queue.put(tc)
+
+        thread_solver = []
+        for t in range(num_threads):
+            t = threading.Thread(target=SolverT, args=(test_cases_queue, lock))
+            thread_solver.append(t)
+
+        for t in thread_solver:
+            t.start()
+
+        for t in thread_solver:
+            t.join()
 
 
 if __name__ == "__main__":
