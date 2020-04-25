@@ -25,8 +25,24 @@ double Limak::MakeWalk(const Walkway& walkway){
 
     energy_ += (dt*d_e);
 
-    if ((energy_ < 0) && (abs(energy_)<1e-15))
+    if ((energy_ < 0) && (abs(energy_)>1e-19) && (walkway.GetSpeed() == 0))
         throw "Out of energy";
+
+    if ((energy_ < 0) && (abs(energy_) > 1e-19)) {
+        energy_ -= (dt * d_e); // Return back wasted energy.
+        double t1 = energy_ / (speed_ - 1);
+        // Distance to walk with current speed.
+        double l1 = t1 * (speed_ + walkway.GetSpeed());
+        // Distance to walk with decreased speed.
+        double l2 = walkway.GetLength() - l1;
+        if (l2 < 0)
+            throw "Negative distance to walk";
+        SetSpeed(1);
+        double t2 = l2 / (walkway.GetSpeed() + GetSpeed());
+
+        dt = t1 + t2;
+    }
+
     return dt;
 };
 
