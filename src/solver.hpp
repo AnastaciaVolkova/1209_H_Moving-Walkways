@@ -32,12 +32,15 @@ private:
         double s_1 = w1.GetSpeed();
         double s_2 = w2.GetSpeed();
         double delta_w1, delta_w2;
-        if (s_1 < s_2)
+        if (s_1 < s_2) {
             delta_w1 = 0;
-        else
-            delta_w1 = std::min(1.0, (l_2*(s_1+1))/(2*l_1+s_2*l_1+l_2));
+            delta_w2 = 0;
+        }
+        else {
+            delta_w1 = std::min(1.0, l_2 * (s_1 + 1) / (2 * l_1 + l_1 * s_2 + l_2));
+            delta_w2 = 1;
+        }
 
-        delta_w2 = ((l_1*(1+s_2))/(l_1+l_2))*((delta_w1)/((l_2*(s_1+1))/(l_1+l_2)-delta_w1));
         return std::make_tuple(delta_w1, delta_w2);
     }
 
@@ -62,6 +65,7 @@ public:
                 } else {
                     {
                         double delta_w, delta_p;
+
                         if (w_it_2->GetSpeed() == 0)
                             std::tie(delta_w, delta_p) = GetDeltasWP(*w_it_1, *w_it_2);
                         else
