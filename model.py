@@ -63,6 +63,11 @@ def CreateTestCases():
     return test_cases
 
 
+def CreateTestCasesWP():
+    test_cases = CreateTestCases()
+    test_cases[:, :, 3] = 0
+    return test_cases
+
 def Solver(l1, s1, l2, s2):
     tn = NormalWalk(l1, s1, l2, s2)
     tmin = tn
@@ -110,7 +115,7 @@ def main():
         Solver(l1, s1, l2, s2)
     else:
         np.random.seed(0)
-        test_cases = CreateTestCases()
+        test_cases = CreateTestCasesWP()
         lock = threading.Lock()
         test_cases_queue = queue.Queue()
 
