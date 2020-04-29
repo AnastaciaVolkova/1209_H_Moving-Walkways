@@ -18,6 +18,6 @@ private:
 
 public:
     // Returns the fastest time, which need Limak to get from 0 to L.
-    static double GetSolution(const std::list<Walkway>& walkways); 
+    static double GetSolution(const std::list<Walkway>& walkways);
 };
 #endif
