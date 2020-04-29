@@ -25,8 +25,8 @@ double Limak::MakeWalk(const Walkway& walkway){
 
     energy_ += (dt*d_e);
 
-    if ((energy_ < 0) && (abs(energy_)>1e-19) && (walkway.GetSpeed() == 0))
-        throw "Out of energy";
+    //if ((energy_ < 0) && (abs(energy_)>1e-19)/* && (walkway.GetSpeed() == 0)*/)
+    //    throw "Out of energy";
 
     if ((energy_ < 0) && (abs(energy_) > 1e-19)) {
         energy_ -= (dt * d_e); // Return back wasted energy.

@@ -1,6 +1,12 @@
 target_file=moving_walkways
 
-source=limak.cpp walkway.cpp main_ut.cpp
+source=limak.cpp walkway.cpp utils.cpp
+
+ifeq ($(TEST), on)
+  source += main_ut.cpp
+else
+  source += main.cpp
+endif
 
 headers=limak.hpp walkway.hpp
 
