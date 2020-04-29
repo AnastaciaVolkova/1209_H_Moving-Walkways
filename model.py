@@ -10,19 +10,20 @@ num_threads = 8
 
 # Limak goes with speed 1.
 # Energy is neigther accumulated, nor consumed.
-def NormalWalk(l1, s1, l2, s2):
+def normal_walk(l1, s1, l2, s2):
     t1 = l1/(s1+1)
     t2 = l2/(s2+1)
     return t1 + t2
 
-def AcceleratedWalk(l1, s1, l2, s2, d1, d2):
+
+def accelerated_walk(l1, s1, l2, s2, d1, d2):
     if d1 > 0:
-        raise "Exception: d1 is positive"
+        raise ValueError("Exception: d1 is positive")
     if d1 < -1:
-        raise "Exception: d1 is less than -1"
+        raise ValueError("Exception: d1 is less than -1")
 
     if d2 < -1 or d2 > 1:
-        raise "Exception: d2 is out of [-1, 1]"
+        raise ValueError("Exception: d2 is out of [-1, 1]")
 
     t1 = l1/(s1+1+d1)
 
@@ -49,7 +50,7 @@ def AcceleratedWalk(l1, s1, l2, s2, d1, d2):
 
 # Test cases:
 # The values of lengths and speeds much bigger or equal to 1
-def CreateTestCases():
+def create_test_cases():
     num_cases = 100
     test_cases = np.empty((num_cases, 16, 4))
     func_bits = (lambda: 10*np.random.rand(num_cases),
@@ -64,20 +65,21 @@ def CreateTestCases():
     return test_cases
 
 
-def CreateTestCasesWP():
-    test_cases = CreateTestCases()
+def create_test_cases_wp():
+    test_cases = create_test_cases()
     test_cases[:, :, 3] = 0
     return test_cases
 
-def Solver(l1, s1, l2, s2):
-    tn = NormalWalk(l1, s1, l2, s2)
+
+def solver(l1, s1, l2, s2):
+    tn = normal_walk(l1, s1, l2, s2)
     tmin = tn
     usefull_case = None
     for di in range(0, d_range + 1):
         d1 = -di / d_range
         for dj in range(0, d_range + 1):
             d2 = dj / d_range
-            t = AcceleratedWalk(l1, s1, l2, s2, d1, d2)
+            t = accelerated_walk(l1, s1, l2, s2, d1, d2)
             if tmin - t > 1e-6:
                 usefull_case = [l1, s1, l2, s2, t, d1, d2]
                 tmin = t
@@ -87,7 +89,7 @@ def Solver(l1, s1, l2, s2):
         return "{} {} {} {} {} {} {}".format(l1, s1, l2, s2, tn, 0, 0)
 
 
-def SolverT(test_cases_queue, lock):
+def solver_t(test_cases_queue, lock):
     lock.acquire()
     if not test_cases_queue.empty():
         tc = test_cases_queue.get()
@@ -96,7 +98,7 @@ def SolverT(test_cases_queue, lock):
     lock.release()
     while tc is not None:
         l1, s1, l2, s2 = tc
-        res = Solver(l1, s1, l2, s2)
+        res = solver(l1, s1, l2, s2)
         test_cases_queue.task_done()
         lock.acquire()
         if not test_cases_queue.empty():
@@ -113,11 +115,11 @@ def main():
         s1 = float(sys.argv[2])
         l2 = float(sys.argv[3])
         s2 = float(sys.argv[4])
-        Solver(l1, s1, l2, s2)
+        solver(l1, s1, l2, s2)
     else:
         np.random.seed(0)
-        test_cases_wp = CreateTestCasesWP()
-        test_cases_ww = CreateTestCases()
+        test_cases_wp = create_test_cases_wp()
+        test_cases_ww = create_test_cases()
 
         test_cases = np.concatenate((test_cases_wp, test_cases_ww), axis=0)
 
@@ -130,7 +132,7 @@ def main():
 
         thread_solver = []
         for t in range(num_threads):
-            t = threading.Thread(target=SolverT, args=(test_cases_queue, lock))
+            t = threading.Thread(target=solver_t, args=(test_cases_queue, lock))
             thread_solver.append(t)
 
         for t in thread_solver:
