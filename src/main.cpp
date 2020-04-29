@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
         Parser::Parse(in_stream, in_data);
         WalkwayL walkways;
         WalkWaysInitializer::Initialize(walkways, in_data);
-        cout << fixed << setfill('0') << setprecision(9) << Solver::GetSolution(walkways) << endl;
+        cout << fixed << setfill('0') << setprecision(10) << Solver::GetSolution(walkways) << endl;
         return static_cast<int>(ErrorCodes::OK);
     }
     else {

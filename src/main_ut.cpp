@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <memory>
 #include <string>
@@ -20,15 +21,15 @@ private:
     double ref_;
     double dut_;
 public:
-    TestCase(stringstream& in_test, const char* gold_ref) :dut_(0) {
+    TestCase(stringstream& in_test, double gold_ref) :dut_(0) {
         InputData in_data;
         Parser::Parse(in_test, in_data);
         WalkWaysInitializer::Initialize(walkways_, in_data);
-        ref_ = stof(gold_ref);
+        ref_ = gold_ref;
     }
     bool Test() {
         dut_ = Solver::GetSolution(walkways_);
-        return (abs(dut_ - ref_) < 1e-3) || (dut_ < ref_);
+        return (abs(dut_ - ref_) < 1e-9) || (dut_ < ref_);
     }
 
     friend class TestCasePool;
@@ -44,10 +45,10 @@ public:
             istringstream iss(x);
             vector<double> x2(istream_iterator<double>{iss}, istream_iterator<double>());
             stringstream in_data_stream;
-            in_data_stream << "2 " << x2[0] + x2[2] << "\n"
+            in_data_stream << setiosflags(ios_base::fixed) << setprecision(10) << "2 " << x2[0] + x2[2] << "\n"
                 << "0 " << x2[0] << " " << x2[1] << "\n"
                 << x2[0] << " " << x2[0] + x2[2] << " " << x2[3];
-            test_cases_.push_back(TestCase(in_data_stream, to_string(x2[4]).c_str()));
+            test_cases_.push_back(TestCase(in_data_stream, x2[4]));
         }
     }
 
@@ -57,7 +58,8 @@ public:
             bool test_res = tc.Test();
             all_passed &= test_res;
             if (!test_res) {
-                cout << "Failed: reference=" << tc.ref_ << " dut=" << tc.dut_ << endl;
+                cout << fixed << setfill('0') << setprecision(10) << 
+                    "Failed: reference=" << tc.ref_ << " dut=" << tc.dut_ << endl;
                 for (auto w : tc.walkways_)
                     cout << w << endl;
             }

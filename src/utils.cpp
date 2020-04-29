@@ -7,14 +7,14 @@ void Parser::Parse(stringstream& in_stream, InputData& in_data) {
     string x;
     getline(in_stream, x);
     istringstream iss(x);
-    vector<string> x2(istream_iterator<string>{iss}, istream_iterator<string>());
-    in_data.walk_ways_number = stoi(x2[0]);
-    in_data.distance_to_walk = stof(x2[1]);
+    vector<double> x2(istream_iterator<double>{iss}, istream_iterator<double>());
+    in_data.walk_ways_number = static_cast<int>(x2[0]);
+    in_data.distance_to_walk = x2[1];
 
     while (getline(in_stream, x) && (x != "")) {
         istringstream iss(x);
-        vector<string> x2(istream_iterator<string>{iss}, istream_iterator<string>());
-        in_data.walkways_parameters.push_back(make_tuple(stof(x2[0]), stof(x2[1]), stof(x2[2])));
+        vector<double> x2(istream_iterator<double>{iss}, istream_iterator<double>());
+        in_data.walkways_parameters.push_back(make_tuple(x2[0], x2[1], x2[2]));
     }
 }
 
