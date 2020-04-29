@@ -20,12 +20,14 @@ private:
     WalkwayL walkways_;
     double ref_;
     double dut_;
+    int id_;
 public:
-    TestCase(stringstream& in_test, double gold_ref) :dut_(0) {
+    TestCase(int id, stringstream& in_test, double gold_ref) :dut_(0) {
         InputData in_data;
         Parser::Parse(in_test, in_data);
         WalkWaysInitializer::Initialize(walkways_, in_data);
         ref_ = gold_ref;
+        id_ = id;
     }
     bool Test() {
         dut_ = Solver::GetSolution(walkways_);
@@ -41,6 +43,7 @@ private:
 public:
     TestCasePool(std::stringstream& str_stream) {
         string x;
+        int line_num = 0;
         while (getline(str_stream, x)) {
             istringstream iss(x);
             vector<double> x2(istream_iterator<double>{iss}, istream_iterator<double>());
@@ -48,22 +51,23 @@ public:
             in_data_stream << setiosflags(ios_base::fixed) << setprecision(10) << "2 " << x2[0] + x2[2] << "\n"
                 << "0 " << x2[0] << " " << x2[1] << "\n"
                 << x2[0] << " " << x2[0] + x2[2] << " " << x2[3];
-            test_cases_.push_back(TestCase(in_data_stream, x2[4]));
+            test_cases_.push_back(TestCase(line_num++, in_data_stream, x2[4]));
         }
     }
 
     bool RunTestPool() {
         bool all_passed = true;
+        int num_failed = 0;        
         for (auto tc : test_cases_) {
             bool test_res = tc.Test();
             all_passed &= test_res;
             if (!test_res) {
                 cout << fixed << setfill('0') << setprecision(10) << 
-                    "Failed: reference=" << tc.ref_ << " dut=" << tc.dut_ << endl;
-                for (auto w : tc.walkways_)
-                    cout << w << endl;
+                    "Failed #" <<  tc.id_ << ": reference=" << tc.ref_ << " dut=" << tc.dut_ << endl;
+                num_failed++;
             }
-        }
+        };
+        cout << "Total failed number: " << num_failed << " out of " << test_cases_.size() << endl;
         return all_passed;
     }
 };
@@ -79,7 +83,9 @@ int main(int argc, char* argv[]) {
         in_stream << ifs.rdbuf();
         ifs.close();
         TestCasePool test_case_pool(in_stream);
-        cout << boolalpha << test_case_pool.RunTestPool() << endl;
+        if (!test_case_pool.RunTestPool()) {
+            cout << "Solver failed." << endl;
+        }
         return static_cast<int>(ErrorCodes::OK);
     }
     else {
