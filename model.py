@@ -7,6 +7,7 @@ import queue
 d_range = 100
 num_threads = 8
 
+
 # Limak goes with speed 1.
 # Energy is neigther accumulated, nor consumed.
 def NormalWalk(l1, s1, l2, s2):
@@ -100,9 +101,9 @@ def SolverT(test_cases_queue, lock):
         lock.acquire()
         if not test_cases_queue.empty():
             tc = test_cases_queue.get()
-            print(res)
         else:
             tc = None
+        print(res)
         lock.release()
 
 
@@ -115,7 +116,11 @@ def main():
         Solver(l1, s1, l2, s2)
     else:
         np.random.seed(0)
-        test_cases = CreateTestCasesWP()
+        test_cases_wp = CreateTestCasesWP()
+        test_cases_ww = CreateTestCases()
+
+        test_cases = np.concatenate((test_cases_wp, test_cases_ww), axis=0)
+
         lock = threading.Lock()
         test_cases_queue = queue.Queue()
 
