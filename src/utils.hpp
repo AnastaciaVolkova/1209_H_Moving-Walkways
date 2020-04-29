@@ -11,7 +11,7 @@
 
 #include "walkway.hpp"
 
-using WalkwayL=std::list<Walkway>;
+using WalkwayL = std::list<Walkway>;
 
 enum class ErrorCodes {
     OK = 0,
@@ -20,7 +20,7 @@ enum class ErrorCodes {
 };
 
 // Structure for input datum.
-struct InputData{
+struct InputData {
     unsigned int walk_ways_number;
     double distance_to_walk;
     std::list<std::tuple<double, double, double>> walkways_parameters;
@@ -35,7 +35,7 @@ public:
 
 
 // Initializer for Walkway list.
-class WalkWaysInitializer{
+class WalkWaysInitializer {
 public:
     // Initialize list of Walkway objects.
     static void Initialize(WalkwayL& ww, const InputData& in_data);

@@ -4,14 +4,14 @@
 #include <tuple>
 #include <iostream>
 
-class Walkway{
+class Walkway {
 private:
-    using EndsT=std::tuple<double, double>;
+    using EndsT = std::tuple<double, double>;
     double speed_; // Speed of walkway.
     EndsT ends_;  // Ends coordinates.
 public:
     Walkway(double x, double y, double speed);
-    
+
     // Speed getter.
     double GetSpeed() const;
 

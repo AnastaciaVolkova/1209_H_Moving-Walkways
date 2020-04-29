@@ -20,7 +20,7 @@ private:
     double ref_;
     double dut_;
 public:
-    TestCase(stringstream& in_test, const char* gold_ref):dut_(0) {
+    TestCase(stringstream& in_test, const char* gold_ref) :dut_(0) {
         InputData in_data;
         Parser::Parse(in_test, in_data);
         WalkWaysInitializer::Initialize(walkways_, in_data);
@@ -46,7 +46,7 @@ public:
             stringstream in_data_stream;
             in_data_stream << "2 " << x2[0] + x2[2] << "\n"
                 << "0 " << x2[0] << " " << x2[1] << "\n"
-                << x2[0] << " " << x2[0] + x2[2]  << " " << x2[3];
+                << x2[0] << " " << x2[0] + x2[2] << " " << x2[3];
             test_cases_.push_back(TestCase(in_data_stream, to_string(x2[4]).c_str()));
         }
     }
@@ -66,7 +66,7 @@ public:
     }
 };
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
     if (argc == 2) {
         ifstream ifs(argv[1]);
         if (!ifs.is_open()) {
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]){
         in_stream << ifs.rdbuf();
         ifs.close();
         TestCasePool test_case_pool(in_stream);
-        cout << boolalpha << test_case_pool.RunTestPool() << endl;        
+        cout << boolalpha << test_case_pool.RunTestPool() << endl;
         return static_cast<int>(ErrorCodes::OK);
     }
     else {

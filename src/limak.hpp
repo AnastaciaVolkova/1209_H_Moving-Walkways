@@ -4,7 +4,7 @@
 
 #include "walkway.hpp"
 
-class Limak{
+class Limak {
 private:
     double speed_; // Limaks speed.
     double energy_;  // Limaks energy.
