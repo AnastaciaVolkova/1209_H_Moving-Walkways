@@ -6,6 +6,7 @@ import queue
 
 d_range = 100
 num_threads = 8
+num_cases = 100
 
 
 # Limak goes with speed 1.
@@ -51,7 +52,6 @@ def accelerated_walk(l1, s1, l2, s2, d1, d2):
 # Test cases:
 # The values of lengths and speeds much bigger or equal to 1
 def create_test_cases():
-    num_cases = 100
     test_cases = np.empty((num_cases, 16, 4))
     func_bits = (lambda: 10*np.random.rand(num_cases),
                  lambda: 100 + 100*np.random.rand(num_cases))
@@ -62,7 +62,7 @@ def create_test_cases():
         tc = tc.transpose()
         tc = tc.reshape((num_cases, 1, 4))
         test_cases[:, i:i+1, :] = tc
-    return test_cases
+    return np.round(test_cases, 10)
 
 
 def create_test_cases_wp():
@@ -80,13 +80,13 @@ def solver(l1, s1, l2, s2):
         for dj in range(0, d_range + 1):
             d2 = dj / d_range
             t = accelerated_walk(l1, s1, l2, s2, d1, d2)
-            if tmin - t > 1e-6:
+            if tmin - t > 1e-9:
                 usefull_case = [l1, s1, l2, s2, t, d1, d2]
                 tmin = t
     if usefull_case is not None:
-        return " ".join([str(uc) for uc in usefull_case])
+        return " ".join(["{:.10f}".format(uc) for uc in usefull_case])
     else:
-        return "{} {} {} {} {} {} {}".format(l1, s1, l2, s2, tn, 0, 0)
+        return "{0:.10f} {1:.10f} {2:.10f} {3:.10f} {4:.10f} {5:.10f} {6:.10f}".format(l1, s1, l2, s2, tn, 0, 0)
 
 
 def solver_t(test_cases_queue, lock):
@@ -115,7 +115,7 @@ def main():
         s1 = float(sys.argv[2])
         l2 = float(sys.argv[3])
         s2 = float(sys.argv[4])
-        solver(l1, s1, l2, s2)
+        print(solver(l1, s1, l2, s2))
     else:
         np.random.seed(0)
         test_cases_wp = create_test_cases_wp()
