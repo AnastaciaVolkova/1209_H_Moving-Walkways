@@ -1,10 +1,11 @@
-target_file=moving_walkways
 
-source=limak.cpp walkway.cpp utils.cpp
+source=limak.cpp walkway.cpp utils.cpp solver.cpp
 
 ifeq ($(TEST), on)
   source += main_ut.cpp
+  target_file=moving_walkways_test
 else
+  target_file=moving_walkways
   source += main.cpp
 endif
 
@@ -36,7 +37,7 @@ $(target_file): $(object_files)
 $(obj_dir)%.o : %.cpp $(headers) $(obj_dir)
 	$(CC) $(CPP_FLAGS) -o $@ $< -c
 
-$(obj_dir): 
+$(obj_dir):
 	mkdir -p $(obj_dir)
 
 clean:
