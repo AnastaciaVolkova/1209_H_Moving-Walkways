@@ -1,7 +1,10 @@
 bin/
 obj/
 *.o
-message.txt
+*.png
+*.txt
+*.exe
+*.stackdump
 moving_walkways
 input.txt
 1209_H_Moving_Walkways/
