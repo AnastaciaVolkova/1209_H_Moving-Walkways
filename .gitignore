@@ -6,6 +6,7 @@ obj/
 *.exe
 *.stackdump
 moving_walkways
+moving_walkways_test
 input.txt
 1209_H_Moving_Walkways/
 .idea/
