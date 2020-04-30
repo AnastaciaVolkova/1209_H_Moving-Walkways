@@ -1,17 +1,20 @@
 // definition for Limak (walker).
 #include "limak.hpp"
 
-Limak::Limak() :speed_(0.0), energy_(0.0) {};
+Limak::Limak() noexcept :speed_(0.0), energy_(0.0) {};
 
 // Speed getter.
-double Limak::GetSpeed() { return speed_; };
+double Limak::GetSpeed() const noexcept { return speed_; };
 
 // Speed setter.
-// ToDo
-void Limak::SetSpeed(double s) { speed_ = s; };
+void Limak::SetSpeed(double s) {
+    if (s < -k_epsi_)
+        throw std::invalid_argument("Speed must not be negative");
+    speed_ = s;
+};
 
 // Energy getter.
-double Limak::GetEnergy() { return energy_; };
+double Limak::GetEnergy() const noexcept { return energy_; };
 
 // Make Limak walk on the path or walkway.
 // walkway - path or walkway to walk.
@@ -28,12 +31,16 @@ double Limak::MakeWalk(const Walkway& walkway) {
     if (energy_ < 0.0) {
         energy_ -= (dt * d_e); // Return back wasted energy.
         double t1 = energy_ / (speed_ - 1);
+
         // Distance to walk with current speed.
         double l1 = t1 * (speed_ + walkway.GetSpeed());
+
         // Distance to walk with decreased speed.
         double l2 = walkway.GetLength() - l1;
+
         if (l2 < 0.0)
-            throw "Negative distance to walk";
+            throw std::exception("Negative distance to walk");
+
         SetSpeed(1);
         double t2 = l2 / (walkway.GetSpeed() + GetSpeed());
 
