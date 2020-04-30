@@ -11,7 +11,7 @@
         double d_w = std::min(1.0, (d * (s + 1)) / (2 * l + d));
 
         // Limak's speed delta on the path.
-        double d_p = 1/*-(l*d_w)/((l+d)*(d_w-((d*(s+1))/(l+d))))*/;
+        double d_p = 1;
 
         return std::make_tuple(d_w, d_p);
     }
