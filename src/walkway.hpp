@@ -13,13 +13,13 @@ public:
     Walkway(double x, double y, double speed);
 
     // Speed getter.
-    double GetSpeed() const;
+    double GetSpeed() const noexcept;
 
     // Get length of walkway.
-    double GetLength() const;
+    double GetLength() const noexcept;
 
     // Put to output stream information on object.
-    friend std::ostream& operator<<(std::ostream& os, const Walkway& ot);
+    friend std::ostream& operator<<(std::ostream& os, const Walkway& ot) noexcept;
 };
 #endif
 
