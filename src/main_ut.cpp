@@ -21,6 +21,7 @@ private:
     double ref_;
     double dut_;
     int id_;
+    const double k_epsilon_ = 1e-9;
 public:
     TestCase(int id, stringstream& in_test, double gold_ref) :dut_(0) {
         InputData in_data;
@@ -31,7 +32,7 @@ public:
     }
     bool Test() {
         dut_ = Solver::GetSolution(walkways_);
-        return (abs(dut_ - ref_) < 1e-9) || (dut_ < ref_);
+        return (abs(dut_ - ref_) < k_epsilon_) || (dut_ < ref_);
     }
 
     friend class TestCasePool;
@@ -57,13 +58,13 @@ public:
 
     bool RunTestPool() {
         bool all_passed = true;
-        int num_failed = 0;        
+        int num_failed = 0;
         for (auto tc : test_cases_) {
             bool test_res = tc.Test();
             all_passed &= test_res;
             if (!test_res) {
-                cout << fixed << setfill('0') << setprecision(10) << 
-                    "Failed #" <<  tc.id_ << ": reference=" << tc.ref_ << " dut=" << tc.dut_ << endl;
+                cout << fixed << setfill('0') << setprecision(10) <<
+                    "Failed #" << tc.id_ << ": reference=" << tc.ref_ << " dut=" << tc.dut_ << endl;
                 num_failed++;
             }
         };
